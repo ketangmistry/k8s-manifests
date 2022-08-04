@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver1
+  labels:
+    app: webserver
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: webserver
+  template:
+    metadata:
+      labels:
+        app: webserver
+    spec:
+      containers:
+      - name: webserver1
+        image: httpd # <-- APACHE IMAGE
+        # LIFECYCLE DEFINITION START 
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "echo WebServer1_$HOSTNAME > htdocs/hostname.html"]
+        # LIFECYCLE DEFINITION END
+        ports:
+        - containerPort: 80
