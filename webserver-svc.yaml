@@ -4,7 +4,7 @@ metadata:
   name: webserver-svc
 spec:
   selector:
-    web: webserver
+    dp: canary
   ports:
     - protocol: TCP
       port: 80

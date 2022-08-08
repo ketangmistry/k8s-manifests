@@ -3,16 +3,17 @@ kind: Deployment
 metadata:
   name: webserver1
   labels:
-    app: webserver
+    web: one
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: webserver
+      app: webserver1
   template:
     metadata:
       labels:
-        app: webserver
+        app: webserver1
+        dp: canary
     spec:
       containers:
       - name: webserver1
@@ -21,7 +22,12 @@ spec:
         lifecycle:
           postStart:
             exec:
-              command: ["/bin/sh", "-c", "echo WebServer1_$HOSTNAME > htdocs/hostname.html"]
+              command: ["/bin/sh", "-c", "echo WebServer1_$HOSTNAME > htdocs/index.html"]
         # LIFECYCLE DEFINITION END
         ports:
         - containerPort: 80
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+            
